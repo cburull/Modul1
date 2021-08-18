@@ -33,5 +33,6 @@ function testVictory() {
     }
     if (l==25){
         document.getElementById('victory').style.display="block";
+        document.getElementById('fivebyfive').style.backgroundColor ="rgb(100,100,100)";
     }
 }

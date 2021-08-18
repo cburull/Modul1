@@ -7,7 +7,7 @@ div.center{
     left: 50vw; 
     transform: translate(-50%, -50%);
 }
-div.fivebyfive{
+#fivebyfive{
     height:80vh;
     width:80vh;
     display:grid;
@@ -21,19 +21,19 @@ div.fivebyfive{
     gap: 3px;
 }
 @media (max-aspect-ratio: 1/1){
-    div.threeXthree{
+    div.fivebyfive{
         height:80vw;
         width:80vw;
     }
 }
 @media (max-height:600px){
-    div.threeXthree{
+    div.fivebyfive{
         height:480px;
         width:480px;
     }
 }
 @media (max-width:600px){
-    div.threeXthree{
+    div.fivebyfive{
         height:480px;
         width:480px;
     }
