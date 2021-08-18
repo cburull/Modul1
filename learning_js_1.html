@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        td {
+            font-size:30px;
+            padding:8px 16px;
+            border: black solid 1px;
+
+        }
+        .codelock {
+            margin-bottom:0;
+            margin-top:50px;
+        }
+    </style>
+</head>
+<body>
+    <h2 id="her" onclick="klikk()">Klikk her.</h2>
+    <p onclick="reset()">Reset</p>
+    <table>
+        <tr>
+            <td onmouseover="x(this)" onmouseout="o(this)">O</td>
+            <td onmouseover="x(this)" onmouseout="o(this)">O</td>
+        </tr>
+        <tr>
+            <td onmouseover="x(this)" onmouseout="o(this)">O</td>
+            <td onmouseover="x(this)" onmouseout="o(this)">O</td>
+        </tr>
+    </table>
+    <h3 class="codelock">Codelock:</h3>
+    <table>
+        <tr>
+            <td onclick="enterCode(this)">1</td>
+            <td onclick="enterCode(this)">2</td>
+            <td onclick="enterCode(this)">3</td>
+        </tr>
+        <tr>
+            <td onclick="enterCode(this)">4</td>
+            <td onclick="enterCode(this)">5</td>
+            <td onclick="enterCode(this)">6</td>
+        </tr>
+        <tr>
+            <td onclick="enterCode(this)">7</td>
+            <td onclick="enterCode(this)">8</td>
+            <td onclick="enterCode(this)">9</td>
+        </tr>
+    </table>
+    <h2 id="enteredNumber" onclick="reEnterCode()" >You have entered: </h2>
+    <script>
+        i=1;
+        function klikk() {
+            document.getElementById('her').innerHTML = 'Du har klikka ' + i + ' ganger';
+            i+=1;
+        }
+        function reset() {
+            document.getElementById('her').innerHTML = 'Klikk her';
+            i=1;
+        }
+        function x(o){
+            o.innerHTML='X';
+        }
+        function o(x){
+            x.innerHTML='O';
+        }
+        function enterCode(x){
+            enteredNumber.innerHTML += x.innerHTML;
+        }
+        
+        function reEnterCode() {
+            document.getElementById('enteredNumber').innerHTML = 'You have entered: ';
+        }
+    </script>
+</html>
