@@ -21,19 +21,19 @@ div.center{
     gap: 3px;
 }
 @media (max-aspect-ratio: 1/1){
-    div.fivebyfive{
+    #fivebyfive{
         height:80vw;
         width:80vw;
     }
 }
 @media (max-height:600px){
-    div.fivebyfive{
+    #fivebyfive{
         height:480px;
         width:480px;
     }
 }
 @media (max-width:600px){
-    div.fivebyfive{
+    #fivebyfive{
         height:480px;
         width:480px;
     }
@@ -92,4 +92,33 @@ div.center{
 #victory{
     display:none;
     font-size:100px;
+}
+button{
+    position:absolute;
+    top: 95vh;
+    left: 50vw; 
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    background-color: rgb(50,50,50);
+    color: white;
+    width: 7.5em;
+    height: 3em;
+    font-family:sans-serif;
+    border: none;
+}
+h3 {
+    position:absolute;
+    top: 0vh;
+    left: 50vw; 
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family:sans-serif;
+}
+h4 {
+    position:absolute;
+    top: 3vh;
+    left: 50vw; 
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family:sans-serif;
 }

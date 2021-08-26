@@ -10,12 +10,16 @@ const lys = [   0,0,0,0,0,
                 0,0,0,0,0,
                 0,0,0,0,0]
 
+var clicks=0;
 function klikk(liste) {
-    for (a in liste){
-        onOff(liste[a]);
-    }
-    testVictory();
+    clicks+=1;
+    document.getElementById("clicks").innerHTML = clicks;
+  for (a in liste) {
+    onOff(liste[a]);
+  }
 }
+
+  testVictory();
 function onOff(x) {
     if (lys[x]==0){
         document.getElementById(rc[x]).style.backgroundColor ="rgb(100,100,100)";
@@ -26,6 +30,7 @@ function onOff(x) {
         lys[x]=0;
     }
 }
+
 function testVictory() {
     l=0;
     for (i in lys) {
@@ -35,4 +40,8 @@ function testVictory() {
         document.getElementById('victory').style.display="block";
         document.getElementById('fivebyfive').style.backgroundColor ="rgb(100,100,100)";
     }
+}
+
+function reset() {
+    window.location.reload(true);
 }
