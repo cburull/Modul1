@@ -1,0 +1,47 @@
+body {
+    background: radial-gradient(circle, rgba(211,211,211,1) 36%, rgba(169,169,169,1) 84%);
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+.rutenett {
+    display: grid;
+    position:absolute;
+    left:50%;
+    transform:translate(-50%);
+    border: 1px solid white;
+    background-color: dimgray;
+}
+.brett{
+    top:10px;
+    width:508px;
+    height:508px;
+    grid-template-areas:    'x x x x'
+                            'x x x x'
+                            'x x x x'
+                            'x x x x';
+}
+.brikker{
+    top:560px;
+    width:1016px;
+    height:254px;
+    grid-template-areas:    'x x x x x x x x'
+                            'x x x x x x x x';
+}
+.item {
+    border: 1px solid white;
+    width: 125px;
+    height: 125px;
+    text-align:center;
+    font-size:60px;
+    line-height:125px;
+} 
+.item:hover{
+    border-color:red;
+}
+.valgtBrikke{
+    border-color:red;
+}
