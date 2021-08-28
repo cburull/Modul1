@@ -7,6 +7,8 @@ const brikker=
 const riktigeBildeNr=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
 const tilfeldigeBildeNr=[...riktigeBildeNr];
 
+var bildeSti = 'Pieces';
+
 var brikkeHTML='';
 var brikkeID='';
 
@@ -14,7 +16,7 @@ function fyllBrikker(){
     for (i in brikker){
         // document.getElementById(brikker[i]).innerHTML=tilfeldigeBildeNr[i];
         var bildeNavn = tilfeldigeBildeNr[i]+'.jpg';
-        document.getElementById(brikker[i]).innerHTML='<img src="Images/Pieces/'+bildeNavn+'" alt="brikke">';
+        document.getElementById(brikker[i]).innerHTML='<img src="Images/'+bildeSti+'/'+bildeNavn+'" alt="brikke">';
     }
 }
 function klikk(denne){
@@ -53,9 +55,19 @@ function testVinn(){
     for (i in brett){
         // var bildeHTML = riktigeBildeNr[i];
         var bildeNavn = riktigeBildeNr[i]+'.jpg';
-        var bildeHTML='<img src="Images/Pieces/'+bildeNavn+'" alt="brikke">';
+        var bildeHTML='<img src="Images/'+bildeSti+'/'+bildeNavn+'" alt="brikke">';
         var ruteHTML = document.getElementById(brett[i]).innerHTML;
         if (ruteHTML==bildeHTML) antallRiktige++;
     }
-    if (antallRiktige==brett.length) alert('Installing Virus!')
+    if (antallRiktige==brett.length) alert('Gratulerer!')
+}
+function byttPuslespill(){
+    if (bildeSti=='Pieces') bildeSti='Pieces3';
+    else if (bildeSti=='Pieces3') bildeSti='Pieces';
+    for (i in brett){
+        document.getElementById(brett[i]).innerHTML='';
+        document.getElementById(brikker[i]).innerHTML='';
+    }
+    tilfeldiggjørBildeNr();
+    fyllBrikker();
 }
