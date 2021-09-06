@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oblig - Stolpediagram</title>
+    <script src="oblig_stolpediagram.js"></script> <!-- importerer controller funksjonenene. -->
+</head>
+<body>
+    <div id="content">
+    </div>
+    
+    <script>
+        // hjelpevariable for både view og controller
+        var contentDiv = document.getElementById('content');
+    
+        // model
+        let numbers = [7, 3, 1, 5, 8];
+        let chosenBar=-1; // Variabel for hvilken stolpe som er valgt. -1 betyr ingen valgt.
+        let inputValue=0; // Variabel for hva som er skrevet i input-feltet.
+        let errorMessage =''; //Variabel for å gi beskjed dersom input er feil.
+        let maxNuberOfBars = 12; // Variabel for å begrense mengden stolper.
+
+        // view
+        show();
+        function show() {
+            inputValue=0;
+            let svgInnerHtml = '';
+            for (let i = 0; i < numbers.length; i++) {
+                svgInnerHtml += createBar(numbers[i], i + 1);
+            }
+            contentDiv.innerHTML = `
+                <svg id="chart" width="500" height="400" viewBox="12 0 100 100">
+                    ${svgInnerHtml}
+                </svg><br/>
+                Valgt stolpe: <i>${chosenBar==-1 ? 'ingen' : chosenBar}</i>
+                <br />
+                Verdi:
+                <input type="number" min="1" max="10" oninput="inputValue = this.value" />
+                <button onclick="addBar()">Legg til stolpe</button>
+                <button ${chosenBar==-1 ? 'disabled' : 'enabled'} onclick="changeBar()">Endre valgt stolpe</button>
+                <button ${chosenBar==-1 ? 'disabled' : 'enabled'} onclick="removeBar()">Fjerne valgt stolpe</button><br />
+                <p style="color:red">${errorMessage}</p>
+                `;
+        }
+    
+        function createBar(number, barNo) {
+            let addStroke = '';
+            if (barNo==chosenBar) addStroke='stroke="black" stroke-width=".67"';
+            const width = 8;
+            const spacing = 2;
+            let x = (barNo - 1) * (width + spacing);
+            let height = number * 10;
+            let y = 100 - height;
+            let color = calcColor(1, maxNuberOfBars, barNo);
+            return `<rect width="${width}" height="${height}"
+                    x="${x}" y="${y}" fill="${color}" ${addStroke}
+                    onclick="chooseBar(${barNo})"></rect>`;
+        }
+    
+        function calcColor(min, max, val) {
+            var minHue = 240, maxHue = 0;
+            var curPercent = (val - min) / (max - min);
+            var colString = "hsl(" + ((curPercent * (maxHue - minHue)) + minHue) + ",100%,50%)";
+            return colString;
+        }
+    </script>
+</body>
+</html>
