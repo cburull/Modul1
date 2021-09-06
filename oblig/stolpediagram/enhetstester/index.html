@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oblig -Stolpediagram- enhetstester</title>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.17.0.css">
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="https://code.jquery.com/qunit/qunit-2.17.0.js"></script>
+    <script src="../oblig_stolpediagram.js"></script> <!-- importerer controller funksjonenene. -->
+    <script>
+        // model:
+        let numbers=[];
+        let chosenBar; // Variabel for hvilken stolpe som er valgt. -1 betyr ingen valgt.
+        let inputValue; // Variabel for hva som er skrevet i input-feltet.
+        let errorMessage; //Variabel for å gi beskjed dersom input er feil.
+        let maxNuberOfBars; // Variabel for å begrense mengden stolper.
+
+        // dummy view:
+        function show(){}
+
+        // enhetstester:
+        QUnit.module('chooseBar()', function() {
+            QUnit.test('Velg stolpe 4', function(assert) {
+                numbers=[7, 3, 1, 5, 8];
+                chosenBar=-1;
+                chooseBar(4);
+                assert.equal(chosenBar, 4,"chosenBar=-1 --> chosenBar=4. Valgte stolpe 4");
+                chooseBar(4);
+                assert.equal(chosenBar, -1,"chosenBar=4 --> chosenBar=-1. Ingen valgt stolpe");
+            });
+        });
+
+        QUnit.module('addBar()', function() {
+            QUnit.test('Legg til stolpe med verdi 5', function(assert) {
+                numbers = [];
+                inputValue=5;
+                addBar();
+                assert.equal(numbers[0], 5,"inputValue=5 --> verdi 5 ble lagt til.");
+                assert.equal(errorMessage, '',"inputValue=5 --> ingen feilmelding.");
+            });
+            QUnit.test('Legg til stolpe med verdi 11', function(assert) {
+                numbers = [];
+                inputValue=11;
+                addBar();
+                assert.notEqual(numbers.length, 1,"inputValue=11 --> ingenting ble ikke lagt til.");
+                assert.equal(errorMessage, 'Verdi må være et tall fra 1 til 10.',"inputValue=11 --> feilmelding: 'Verdi må være et tall fra 1 til 10.'");
+            });
+            QUnit.test('Legg til stolpe med verdi 0', function(assert) {
+                numbers = [];
+                inputValue=0;
+                addBar();
+                assert.notEqual(numbers.length, 1,"inputValue=0 --> ingenting ble ikke lagt til.");
+                assert.equal(errorMessage, 'Verdi må være et tall fra 1 til 10.',"inputValue=0 --> feilmelding: 'Verdi må være et tall fra 1 til 10.'");
+            });
+            QUnit.test('Legg til stolpe med verdi abcd', function(assert) {
+                numbers = [];
+                inputValue='abcd';
+                addBar();
+                assert.notEqual(numbers.length, 1,"inputValue='abcd' --> ingenting ble ikke lagt til.");
+                assert.equal(errorMessage, 'Verdi må være et tall fra 1 til 10.',"inputValue='abcd' --> feilmelding: 'Verdi må være et tall fra 1 til 10.'");
+            });
+            QUnit.test('Legg til stolpe nr 13 når maks er satt til 12', function(assert) {
+                maxNuberOfBars = 12;
+                numbers = [1,2,3,4,5,6,7,8,9,10,1,2];
+                inputValue=5;
+                addBar();
+                assert.notEqual(numbers.length, 13,"maks antall stolper +1 --> ingenting ble ikke lagt til.");
+                assert.equal(errorMessage, 'Maks stolper tillatt: 12.',"maks antall stolper +1 --> feilmelding: 'Maks stolper tillatt: 12.'");
+            });
+        });
+
+        QUnit.module('removeBar()', function() {
+            QUnit.test('Fjern stolpe 4', function(assert) {
+                numbers=[7, 3, 1, 5, 8];
+                chosenBar=4;
+                removeBar();
+                assert.deepEqual(numbers, [7, 3, 1, 8],"Fjernet stolpen");
+            });
+        });
+
+        QUnit.module('changeBar()', function() {
+            QUnit.test('Endre verdien til stolpe nr 4 til 10', function(assert) {
+                numbers=[7, 3, 1, 5, 8];
+                chosenBar=4;
+                inputValue=10;
+                changeBar();
+                assert.equal(numbers[3], 10,"Endret verdi på stolpen til 10");
+                assert.equal(errorMessage, '',"inputValue=10 --> ingen feilmelding");
+            });
+            QUnit.test('Endre verdien til stolpe nr 4 til 0', function(assert) {
+                numbers=[7, 3, 1, 5, 8];
+                chosenBar=4;
+                inputValue=0;
+                changeBar();
+                assert.equal(numbers[3], 5,"inputValue=0 --> ingen endring i stolpens verdi");
+                assert.equal(errorMessage, 'Verdi må være et tall fra 1 til 10.',"inputValue=0 --> feilmelding: 'Verdi må være et tall fra 1 til 10.'");
+            });
+            QUnit.test('Endre verdien til stolpe nr 4 til abcd', function(assert) {
+                numbers=[7, 3, 1, 5, 8];
+                chosenBar=4;
+                inputValue='abcd';
+                changeBar();
+                assert.equal(numbers[3], 5,"inputValue=0 --> ingen endring i stolpens verdi");
+                assert.equal(errorMessage, 'Verdi må være et tall fra 1 til 10.',"inputValue='abcd' --> feilmelding: 'Verdi må være et tall fra 1 til 10.'");
+            });
+        });
+    </script>
+</body>
