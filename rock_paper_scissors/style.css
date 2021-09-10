@@ -1,0 +1,102 @@
+body {
+    background: radial-gradient(gray 20%, rgb(59, 59, 59) 80%);
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+header {
+    height: 8vh;
+    width: 90vw;
+    min-height: 1.3em;
+    background-color: rgba(0, 0, 0, 0.185);
+    padding-top:1vh;
+    border: 0.01em solid transparent;
+    border-image: linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
+    border-image-slice: 1;
+    cursor: pointer;
+    margin-left: 5vw;
+    font-size: 2.8em;
+    color: rgb(222, 222, 222);
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom:.2em;
+}
+
+.resetBtn {
+    position:absolute;
+    left:50%;
+    top:90vh;
+    transform:translate(-150%);
+    background-color: rgba(0, 0, 0, 0.185);
+    color: white;
+    border: 0.01em solid transparent;
+    border-image: linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
+    border-image-slice: 1;
+    cursor: pointer;
+    height:5vh;
+    width:12vh;
+    min-height:1.25em;
+    min-width:3em;
+    font-size:1.2em;
+    padding:0;
+}
+.qunit {
+    transform:translate(+50%);
+}
+
+.row {
+    padding:0;
+    margin:0;
+    position:absolute;
+    left:50%;
+    transform:translate(-50%);
+    width: 50vw;
+    min-width:26em;
+    display: grid;
+    grid-template-areas: 'x x x';
+}
+.choices{
+    top:60vh;
+    min-width:20em;
+    width: 40vw;
+}
+.pickBtn {
+    cursor: pointer;
+    position:relative;
+    left:50%;
+    transform:translate(-50%);
+    width:12vw;
+    height:12vw;
+    min-width:6em;
+    min-height:6em;
+    
+}
+#infoRow {
+    width:10vw;
+    min-width:4.1em;
+    text-align:center;
+    position:relative;
+    left:50%;
+    transform:translate(-50%);
+
+    font-size:1.7em;
+}
+.result {
+    top:30vh;
+    position:absolute;
+    left: 50%;
+    min-width:20em;
+    transform:translate(-50%);
+    text-align: center;
+    font-size:1.8em;
+    line-height:2em;
+}
+
+a {
+    text-decoration: none;
+}
