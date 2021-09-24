@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeNote</title>
+    <style>
+        body {
+            background-color:black;
+            margin:0;
+        }
+        #backGroundImage {
+            background-image:url("s.png");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: 60%;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            opacity: 0.05;
+        }
+        #app {
+            position: absolute; 
+            height: 100vh;
+            width: 100vw;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction:column;
+            font-family:Garamond;
+        }
+        .note {
+            color:red;
+            min-width:400px;
+            min-height:50px;
+            width:75vw;
+            height:4vw;
+            margin:5px 0;
+            border:1px solid rgba(255,255,255,.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .deleteNote {
+            cursor:pointer;
+        }
+        .timerDisplay {
+            display: flex;
+            justify-content: space-between;
+            width:100px;
+        }
+        .timerDisplay > * {cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div id="backGroundImage"></div>
+    <div id="app"></div>
+</body>
+<script>
+                                        //will add:
+                                        //toggle night/day button
+                                        //add note button
+                                        // alarm av på 🔇🔊
+                                        //klikk på "tidspunkt:" for å bytte til "countdown:".
+                                        //klikk på "countdown:" for å bytte til "tidspunkt:".
+                                        //relevant bakgrunnsbilde.
+    model = {
+        currentTime: new Array(4),
+        alarms: {
+            default: "",
+        },
+        notes: [
+            {
+                description: "Note 1",
+                alarm: "",              // if there is one this will be added to the note.
+                endTime: new Array(4),  // 
+                totalTime: new Array(4),// 
+                timeRemaining: 60,      // array[hour,min,sek,millisek] loop through to display time left. loop 'h:m:s:m' with if(character===':')i++;=t[i]=
+                html: "",               // this notes html.
+                started: false,
+                countdown: true,
+                editDescription: false,
+                editTime: false,
+                editcountdownTime: false,
+            },{
+                description: "Note 2",
+                alarm: "",              // if there is one this will be added to the note.
+                endTime: new Array(4),  // 
+                totalTime: new Array(4),// 
+                timeRemaining: 300,     // in seconds.
+                html: "",               // this notes html.
+                started: false,
+                countdown: true,
+                editDescription: false,
+            }
+        ]
+    }
+    
+    show();
+    function show(){
+        let html = '';
+        for (i in model.notes){
+            html +=`
+            <div class="note">`;
+
+                if (model.notes[i].editDescription) html += `<input type="text" class="description" value="${model.notes[i].description}" onchange="setDescription(this,${i})"></input>`
+                else html += `<div class="description" onclick="editDescription(${i})">${model.notes[i].description}</div>`;
+
+            html +=`
+            <div class="timerDisplay">`;
+
+                if (model.notes[i].editcountdownTime) html+= `
+                    <input class="time" type="time" step="1" value="00:00:00" onchange="setEndTime(this.value,${i})"></input>`;
+                else html += `
+                    <div class="resetCountdown" onclick="resetCountdown(${i})">↻</div>                    
+                    <div class="time" onclick="editCountdown(${i})">${model.notes[i].timeRemaining}</div>`;
+
+            html +=`
+                </div>
+                <div class="deleteNote" onclick="deleteNote(${i})">x</div>
+            </div>
+            `;
+        }
+        document.getElementById('app').innerHTML=html;
+    }
+
+    //setInterval(updateTimers,100)
+    function updateTimers(){
+        updateCurrentTime();
+        for (i in model.notes){
+            let note = model.notes[i];
+            if (note.started){
+                if (note.countdown) {
+
+                }
+            }
+        }
+    }
+    function editDescription(i){
+        model.notes[i].editDescription = true;
+        show();
+    }
+    function setDescription(input, i){
+        model.notes[i].editDescription = false;
+        model.notes[i].description=input.value;
+        show();
+    }
+    function editCountdown(i){
+        if (model.notes[i].started) return;
+        model.notes[i].editcountdownTime = true;
+        show();
+    }
+    function setEndTime(t,i){
+        updateCurrentTime();                            //temporary just to make the current code work...
+        const endTime = model.notes[i].endTime;
+        const currentTime = [...model.currentTime];     //copying to avoid changes to model.currentTime mid calculations..
+        let hours = parseInt(t[0]+t[1])+currentTime[0];
+        let minutes = parseInt(t[3]+t[4])+currentTime[1];
+        let seconds = (t.length>5 ? parseInt(t[6]+t[7]) : 0)+currentTime[2];
+        if (seconds>59) {seconds-60;minutes++}
+        if (minutes>59) {minutes-60;hours++}
+        if (hours>23) {hours-24}
+        endTime[3]=currentTime[3];
+        endTime[2]=seconds;
+        endTime[1]=minutes;
+        endTime[0]=hours;
+
+//every note with countdown==true will then calculate time remaining in separate function every tick to get timeRemaining array which is used to display time remaining in the note's countdown.
+        const timeText = `${hours>9?hours:'0'+hours}:${minutes>9?minutes:'0'+minutes}:${seconds>9?seconds:'0'+seconds}`;
+        console.log(timeText);
+        console.log(endTime);
+    }
+    function updateTimeRemaining(i){
+        updateCurrentTime();                            //temporary just to make the current code work...
+        const endTime = model.notes[i].endTime;
+        const currentTime = [...model.currentTime];     //copying to avoid changes to model.currentTime mid calculations..
+    }
+    function startStopCountdown(i){
+        // const note=model.note[i];
+        // note.started ? note.started=false : note.started=true;
+        // if (note.started) update note.endTime based on note.currentTime and note.timeRemaining;
+        // show();
+    }
+    function resetCountdown(i){
+        // const note=model.note[i];
+        // update note.endTime based on note.currentTime and note.totalTime
+        // show();
+    }
+    function checkTimeRemaining(note){
+        let remainingTime=getTimeRemaining(note.endTime);
+        if (note.timeRemaining-remainingTime>=1) {
+            note.timeRemaining=remainingTime;
+            return true;
+        }
+    }
+    function updateCurrentTime(){
+        const d = new Date();
+        const currentTime = [d.getHours(),d.getMinutes(),d.getSeconds(),d.getMilliseconds()]
+        for (i in currentTime) model.currentTime[i]=currentTime[i];
+    }
+    function deleteNote(i){
+        model.notes.splice(i,1);
+        show();
+    }
+</script>
+</html>
