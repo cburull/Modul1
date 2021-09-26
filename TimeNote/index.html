@@ -58,9 +58,9 @@
             width:120px;
         }
         .timerDisplay > * {cursor:pointer;}
-        .pause{
+        .startStop{
             height:11px;
-            transform:translatey(30%);
+            transform:translatey(31%);
         }
     </style>
 </head>
@@ -104,6 +104,8 @@
                 started: false,
                 countdown: true,
                 editDescription: false,
+                editTime: false,
+                editcountdownTime: false,
             }
         ]
     }
@@ -112,21 +114,22 @@
     function show(){
         let html = '';
         for (i in model.notes){
+            const note = model.notes[i];
             html +=`
             <div class="note">`;
 
-                if (model.notes[i].editDescription) html += `<input type="text" class="description" value="${model.notes[i].description}" onchange="setDescription(this,${i})"></input>`
-                else html += `<div class="description" onclick="editDescription(${i})">${model.notes[i].description}</div>`;
+                if (note.editDescription) html += `<input type="text" class="description" value="${note.description}" onchange="setDescription(this,${i})"></input>`
+                else html += `<div class="description" onclick="editDescription(${i})">${note.description}</div>`;
 
             html +=`
             <div class="timerDisplay">`;
 
-                if (model.notes[i].editcountdownTime) html+= `
+                if (note.editcountdownTime) html+= `
                     <input class="time" type="time" step="1" value="00:00:00" onchange="setTimeRemainingCountdown(this.value,${i})"></input>`;
                 else html += `
                     <div class="resetCountdown" onclick="resetCountdown(${i})">↻</div>
-                    <img class="pause" src="pause.svg" alt="pause-button" onclick="startStopCountdown(${i})"></img>
-                    <div class="time" onclick="editCountdown(${i})">${getCountdownText(i)}</div>`;
+                    <img class="startStop" src="${note.started?'stop.svg':'start.svg'}" alt="${note.started?'stop':'start'}-button" onclick="startStopCountdown(${i})"></img>
+                    <div class="time" id="time${i}" onclick="editCountdown(${i})">${getCountdownText(i)}</div>`;
 
             html +=`
                 </div>
@@ -137,14 +140,15 @@
         document.getElementById('app').innerHTML=html;
     }
 
-    //setInterval(updateTimers,100)
+    setInterval(updateTimers,100);
     function updateTimers(){
         updateCurrentTime();
         for (i in model.notes){
             let note = model.notes[i];
             if (note.started){
                 if (note.countdown) {
-
+                    updateTimeRemaining(i);
+                    updateCountdownDisplay(i);
                 }
             }
         }
@@ -165,21 +169,22 @@
     }
     function getCountdownText(i){
         const timeRemaining = model.notes[i].timeRemaining;
-        return `${timeRemaining[0]>9?timeRemaining[0]:'0'+timeRemaining[0]}:
-                ${timeRemaining[1]>9?timeRemaining[1]:'0'+timeRemaining[1]}:
-                ${timeRemaining[2]>9?timeRemaining[2]:'0'+timeRemaining[2]}`;
+        return `${timeRemaining[0]>9 ? timeRemaining[0] : '0' + timeRemaining[0]}:${
+                timeRemaining[1]>9 ? timeRemaining[1] : '0' + timeRemaining[1]}:${
+                timeRemaining[2]>9 ? timeRemaining[2] : '0' + timeRemaining[2]}`;
     }
 
     // Sets the time reamining for the note's countdown timer.
     function setTimeRemainingCountdown(t,i){
-        const totalTime = model.notes[i].totalTime;
-        const timeRemaining = model.notes[i].timeRemaining;
-        timeRemaining[0] = parseInt(t[0]+t[1]);
-        timeRemaining[1] = parseInt(t[3]+t[4]);
-        timeRemaining[2] = parseInt(t[6]+t[7]);
+        const note = model.notes[i];
+        const totalTime = note.totalTime;
+        const timeRemaining = note.timeRemaining;
+        timeRemaining[0] = parseInt(t[0] + t[1]);
+        timeRemaining[1] = parseInt(t[3] + t[4]);
+        timeRemaining[2] = parseInt(t[6] + t[7]);
         timeRemaining[3] = 0;
-        for (let i in timeRemaining) {totalTime[i]=timeRemaining[i];}
-        model.notes[i].editcountdownTime = false;
+        for (let i in timeRemaining) {totalTime[i] = timeRemaining[i];}
+        note.editcountdownTime = false;
         show();
     }
 
@@ -193,16 +198,27 @@
         endTime[1] = timeRemaining[1] + currentTime[1];
         endTime[2] = timeRemaining[2] + currentTime[2];
         endTime[3] = timeRemaining[3] + currentTime[3];
-        if (endTime[3]>999){endTime[3]-1000;endTime[2]++}
-        if (endTime[2]>59) {endTime[2]-60;endTime[1]++}
-        if (endTime[1]>59) {endTime[1]-60;endTime[0]++}
+        if (endTime[3]>999){endTime[3]-1000; endTime[2]++}
+        if (endTime[2]>59) {endTime[2]-60; endTime[1]++}
+        if (endTime[1]>59) {endTime[1]-60; endTime[0]++}
         if (endTime[0]>23) {endTime[0]-24}
     }
 
     function updateTimeRemaining(i){
-        updateCurrentTime();                            // temporary just to make the current code work.
+        updateCurrentTime();                                // temporary just to make the current code work.
         const endTime = model.notes[i].endTime;
-        const currentTime = [...model.currentTime];     // copying to avoid changes to model.currentTime mid calculations.
+        const currentTime = [...model.currentTime];         // copying to avoid changes to model.currentTime mid calculations.
+        const timeRemaining = model.notes[i].timeRemaining;
+        const t = new Array(4);
+        for (let i in t) {t[i] = endTime[i] - currentTime[i];}
+        if (t[3]<0) {t[3] += 1000; t[2]--}
+        if (t[2]<0) {t[2] += 60; t[1]--}
+        if (t[1]<0) {t[1] += 60; t[0]--}
+        for (let i in t) {timeRemaining[i] = t[i];}
+    }
+    function updateCountdownDisplay(i){
+        const note=model.notes[i];
+        document.getElementById(`time${i}`).innerHtml = getCountdownText(i);
     }
 
     function startStopCountdown(i){
