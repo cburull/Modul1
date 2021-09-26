@@ -62,11 +62,27 @@
             height:11px;
             transform:translatey(31%);
         }
+        #timers{
+            position: absolute; 
+            height: 100vh;
+            width:100px;
+            left:70vw;
+            top: 0px;
+            bottom: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction:column;
+            font-family:Garamond;
+            border-left:yellowgreen solid 1px;
+            border-right:yellowgreen solid 1px;
+        }
     </style>
 </head>
 <body>
     <div id="backGroundImage"></div>
     <div id="app"></div>
+    <div id="timers"></div>
 </body>
 <script>
                                         //will add:
@@ -218,7 +234,7 @@
     }
     function updateCountdownDisplay(i){
         const note=model.notes[i];
-        document.getElementById(`time${i}`).innerHtml = getCountdownText(i);
+        document.getElementById(`time${i}`).innerHtml = getCountdownText(i); // this doesn't work... use multiple show functions?
     }
 
     function startStopCountdown(i){
