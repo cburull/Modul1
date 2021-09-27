@@ -47,10 +47,14 @@
             border:1px solid rgba(255,255,255,.3);
             display: flex;
             align-items: center;
-            justify-content: space-around;
+            justify-content: space-between;
+        }
+        .description{
+            margin-left:10px;
         }
         .deleteNote {
             cursor:pointer;
+            margin-right:10px;
         }
         .timerDisplay {
             display: flex;
@@ -154,7 +158,7 @@
                 else html += `
                     <div class="resetCountdown" onclick="resetCountdown(${i})">↻</div>
                     <img class="startStop" src="${note.started?'stop.svg':'start.svg'}" alt="${note.started?'stop':'start'}-button" onclick="startStopCountdown(${i})"></img>
-                    <div onclick="editCountdown(${i})">${getCountdownText(i)}</div>`;
+                    <div onclick="editCountdown(${i})">set time</div>`;
 
             html +=`
                 </div>
@@ -221,32 +225,33 @@
         for (let i in timeRemaining) {totalTime[i] = timeRemaining[i];}
         note.editcountdownTime = false;
         showNotes();
+        showTimers();
     }
 
     // Sets the end time for the note's countdown timer (when the timer is started).
     function setEndTimeCountdown(i){
-        updateCurrentTime();                                // temporary just to make the current code work.
-        const endTime = model.notes[i].endTime;
-        const timeRemaining = model.notes[i].timeRemaining; // won't update since countdown is paused.
+        const note = model.notes[i];
+        const endTime = note.endTime;
+        const timeRemaining = note.timeRemaining; // won't update since countdown is paused.
         const currentTime = [...model.currentTime];         // copying to avoid changes to model.currentTime mid calculations.
         endTime[0] = timeRemaining[0] + currentTime[0];
         endTime[1] = timeRemaining[1] + currentTime[1];
         endTime[2] = timeRemaining[2] + currentTime[2];
         endTime[3] = timeRemaining[3] + currentTime[3];
-        if (endTime[3]>999){endTime[3]-1000; endTime[2]++}
-        if (endTime[2]>59) {endTime[2]-60; endTime[1]++}
-        if (endTime[1]>59) {endTime[1]-60; endTime[0]++}
-        if (endTime[0]>23) {endTime[0]-24}
+        if (endTime[3]>999){endTime[3] -= 1000; endTime[2]++}
+        if (endTime[2]>59) {endTime[2] -= 60; endTime[1]++}
+        if (endTime[1]>59) {endTime[1] -= 60; endTime[0]++}
+        if (endTime[0]>23) {endTime[0] -= 24}
     }
 
     function updateTimeRemaining(i){
-        updateCurrentTime();                                // temporary just to make the current code work.
         const note = model.notes[i];
         if (note.started == false) return;
         const timeRemaining = note.timeRemaining;
         const currentTime = [...model.currentTime];         // copying to avoid changes to model.currentTime mid calculations.
         const t = [...note.endTime];
         for (let i in t) {t[i] -= currentTime[i];}
+        if (t[0]<0) {t[0] += 24}
         if (t[3]<0) {t[3] += 1000; t[2]--}
         if (t[2]<0) {t[2] += 60; t[1]--}
         if (t[1]<0) {t[1] += 60; t[0]--}
@@ -256,10 +261,6 @@
             for (let i in t) {t[i] = 0;}
         }
         for (let i in t) {timeRemaining[i] = t[i];}
-    }
-    function updateCountdownDisplay(i){
-        const note=model.notes[i];
-        document.getElementById(`time${i}`).innerHtml = getCountdownText(i); // this doesn't work... use multiple show functions?
     }
 
     function startStopCountdown(i){
@@ -292,6 +293,7 @@
     function deleteNote(i){
         model.notes.splice(i,1);
         showNotes();
+        showTimers();
     }
 </script>
 </html>
