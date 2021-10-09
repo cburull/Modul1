@@ -1,0 +1,173 @@
+body {
+    background-color:black;
+    margin:0;
+}
+
+#header {
+    color:rgba(255,255,255,.3);
+    position:absolute;
+    left:50%;transform:translate(-50%);
+    top:50px;
+    font-size:60px;
+}
+
+#backGroundImage {
+    background-image:url("s.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: 60%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.05;
+}
+.addNote {
+    color:red;
+    cursor:pointer;
+    padding:5px;
+    margin-bottom:50px;
+    border:1px solid rgba(255,255,255,.3);
+}
+
+#notes {
+    position: absolute; 
+    width: 100vw;
+    top: 200px;
+    display: flex;
+    align-items: center;
+    flex-direction:column;
+    font-family:Garamond;
+}
+
+.note {
+    color:red;
+    min-width:496px;
+    min-height:80px;
+    width:75vw;
+    margin:0px 0 5px 0;
+    border:1px solid rgba(255,255,255,.3);
+    display: flex;
+    align-items: center;
+}
+
+.descriptionDiv {
+    margin-left:1.5vw;
+    display:flex;
+    align-items: center;
+    flex: 1 1 900px;
+}
+
+.editDescription {
+    cursor:pointer;
+    font-size:1.6em;
+    flex: 0 0 40px;
+}
+
+.description {
+    flex: 0 1 95%;
+    max-width:1043px;
+    border:1px solid rgba(255,255,255,.3);
+    max-height: 200px;
+    min-height:40px;
+    margin: 10px 1.5vw 10px 0px;
+    display:flex;
+    align-items: center;
+    overflow: auto;
+}
+
+.resetCountdownDiv {
+    flex: 0 0 40px;
+}
+
+.resetCountdown {
+    cursor:pointer;
+    margin-top:2px;
+}
+
+.startStopDiv {
+    flex: 0 0 50px;
+    height:18px;
+    display: flex;
+    align-items: center;
+}
+
+.startStop {
+    cursor:pointer;
+    height:12px;
+}
+
+.deleteNote {
+    cursor:pointer;
+    margin-right:1.5vw;
+    flex-shrink:0;
+}
+
+.timeDisplay {
+    cursor:pointer;
+    flex: 0 0 165px;
+}
+
+.editTime {
+    width: 80px;
+}
+
+.timers {
+    position: absolute; 
+    width:100px;
+    right:16vw;
+    top: 200px;
+    display: flex;
+    flex-direction:column;
+    font-family:Garamond;
+}
+
+.time {
+    color:red;
+    height:30px;
+    position:absolute;
+    display: flex;
+    align-items: center;
+    cursor:pointer;
+}
+
+@media(max-width:650px){
+    .timers {
+        right:15vw;
+    }
+}
+
+@media(max-width:630px){
+    .timers {
+        right:13.5vw;
+    }
+}
+
+@media(max-width:610px){
+    .timers {
+        right:12vw;
+    }
+}
+
+@media(max-width:580px){
+    .timers {
+        left:none;
+        right:10vw;
+    }
+}
+
+@media(max-width:560px){
+    .timers {
+        right:none;
+        left:73vw;
+    }
+}
+
+@media(max-width:520px){
+    .timers {
+        right:none;
+        left:75vw;
+    }
+}
