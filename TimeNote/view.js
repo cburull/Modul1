@@ -18,7 +18,7 @@ showNotes();// change time to ⏱, hover ⏱: - dropdown remove time, hover coun
                 <div class="timeDisplay" onclick="switchTimerType(${i})">time:</div>
                 <div class="deleteNote" onclick="deleteNote(${i})">✖</div>
             </div>
-            `;// change buttons: ✗✘✕✔?
+            `;// change buttons: ✗✘✕✔?                                         <input type="text" spellcheck="false"> ondeselect?center input..
         }
         html +=`<div class="addNote" onclick="addNote()">add note</div>`;
         document.getElementById('notes').innerHTML = html;
@@ -30,7 +30,7 @@ showNotes();// change time to ⏱, hover ⏱: - dropdown remove time, hover coun
             const note = model.notes[i];
             let styleHtml = `top:${note.timeDivTop}px;`;
             if (note.countdown) html +=`<div class="time" style="${styleHtml}">${getCountdownText(i)}</div>`;
-            else if (note.time) html +=`<div class="time" style="${styleHtml}">time</div>`;
+            else if (note.time) html +=`<div class="time" style="${styleHtml}">${getTimeText(i)}</div>`;
             else html +=`<div class="time" style="${styleHtml}"></div>`;
         }
         document.getElementById('timers').innerHTML = html;
@@ -43,8 +43,9 @@ showNotes();// change time to ⏱, hover ⏱: - dropdown remove time, hover coun
             const note = model.notes[i];
             let styleHtml = `top:${note.timeDivTop}px;`;
             if (note.editCountdownTime) html +=`<input class="time" style="${styleHtml}" type="time" step="1" value="00:00:00" onchange="setTimeRemainingCountdown(this.value,${i})"></input>`;
-            else if (note.editTime) html +=`<input class="time" style="${styleHtml}" type="time" value="00:00" ></input>`;// onchange="setTime(this.value,${i})"
+            else if (note.editTime) html +=`<input class="time" style="${styleHtml}" type="time" value="00:00" onchange="setEndTime(this.value,${i})"></input>`;
             else if (!note.time && !note.countdown) html +=`<div class="time" style="${styleHtml}" onclick="editCountdown(${i})">⏱?</div>`;
+            else if (note.time) html +=`<div class="time editTime" style="${styleHtml}" onclick="editTime(${i})"></div>`;
             else html +=`<div class="time editTime" style="${styleHtml}" onclick="editCountdown(${i})"></div>`;
         }
         document.getElementById('editTimers').innerHTML = html;

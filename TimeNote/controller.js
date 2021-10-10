@@ -39,6 +39,7 @@ function switchTimerType(i){
     if (note.countdown) {note.countdown = false; note.time = true;}
     else if (note.time) {note.countdown = true; note.time = false;}
     showTimers();
+    showEditTimers();
 }
 
 // Enables editing of note description.
@@ -81,13 +82,26 @@ function editCountdown(i){
     showNotes();
     showEditTimers();
 }
-
+function editTime(i){
+    model.notes[i].editTime = true;
+    showNotes();
+    showEditTimers();
+}
 
 function getCountdownText(i){
     const timeRemaining = model.notes[i].timeRemaining;
     return `${timeRemaining[0]>9 ? timeRemaining[0] : '0' + timeRemaining[0]}:
             ${timeRemaining[1]>9 ? timeRemaining[1] : '0' + timeRemaining[1]}:
             ${timeRemaining[2]>9 ? timeRemaining[2] : '0' + timeRemaining[2]}`;
+}
+
+function getTimeText(i){
+    const endTime = model.notes[i].endTime;
+    return `${endTime[0]>9 ? endTime[0] : '0' + endTime[0]}:
+            ${endTime[1]>9 ? endTime[1] : '0' + endTime[1]}
+            ${endTime[2]==0 ? '' : `: 
+            ${endTime[2]>9 ? endTime[2] : '0' + endTime[2]}`}
+           `;
 }
 
 // Sets the time reamining for the note's countdown timer.
@@ -111,7 +125,7 @@ function setTimeRemainingCountdown(t,i){
 function setEndTimeCountdown(i){
     const note = model.notes[i];
     const endTime = note.endTime;
-    const timeRemaining = note.timeRemaining; // won't update since countdown is paused.
+    const timeRemaining = note.timeRemaining;           // won't update since countdown is paused.
     const currentTime = [...model.currentTime];         // copying to avoid changes to model.currentTime mid calculations.
     endTime[0] = timeRemaining[0] + currentTime[0];
     endTime[1] = timeRemaining[1] + currentTime[1];
@@ -121,6 +135,29 @@ function setEndTimeCountdown(i){
     if (endTime[2]>59) {endTime[2] -= 60; endTime[1]++}
     if (endTime[1]>59) {endTime[1] -= 60; endTime[0]++}
     if (endTime[0]>23) {endTime[0] -= 24}
+}
+
+function setEndTime(t,i){
+    const note = model.notes[i];
+    const endTime = note.endTime;
+    endTime[0] = parseInt(t[0] + t[1]);
+    endTime[1] = parseInt(t[3] + t[4]);
+    endTime[2] = 0;
+    endTime[3] = 0;
+    note.editTime = false;
+    note.started=true;
+    updateTimeRemaining(i);
+    setTimeout(()=>{setTotalTime(i)}, 100);
+    showNotes();
+    showTimers();
+    showEditTimers();
+}
+
+function setTotalTime(i){
+    const note = model.notes[i];
+    const totalTime = note.totalTime;
+    const timeRemaining = [...note.timeRemaining];
+    for (let i in timeRemaining) {totalTime[i] = timeRemaining[i];}
 }
 
 // Updates note's timeRemaining based on its endTime and model's currentTime
