@@ -4,7 +4,6 @@
 	 viewBox="0 0 90 120" style="enable-background:new 0 0 90 120;" xml:space="preserve">
 	 
 	<g>
-		<rect x="0" width="26" height="120" fill="" stroke=""/>
-		<rect x="64" width="26" height="120" fill="" stroke=""/>
+        <polygon points="0,0 0,120 90,60" fill="red" stroke="red"/>
 	</g>
 </svg>

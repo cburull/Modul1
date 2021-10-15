@@ -5,23 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TimeNote</title>
-    <link rel="stylesheet" href="style.css"> 
+    <script src="https://unpkg.com/vue@next"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1  id="header">Time Note</h1>
-    <div id="backGroundImage"></div>
-    <div id="notes"></div>
-    <div class="timers" id="timers"></div>
-    <div class="timers" id="editTimers"></div>
+    <div id="timeNote">
+        <div id="backgroundClock">{{ currentTimeString() }}</div>
+        <div id="head">
+            <div id="header">Time Note</div>
+            <button id="addNoteBtn" @click="addNote()">Add Note</button>
+        </div>
+        <div id="page">
+            <div id="notes" v-for="(note, index) in notes">
+                <div class="note">
+                    <div class="noteLeft">
+                        <pre class="description" v-show="!note.editDescription" @dblclick="note.editDescription=true">{{ note.description }}</pre>
+                        <div class="editDescription" v-show="note.editDescription">
+                            <textarea v-model="note.description"></textarea>
+                            <button  @click="note.editDescription=false">✔</button>
+                        </div>
+                    </div>
+                    <div class="noteRight">
+                        <div v-show="!note.editTime && !note.editCountdown" class="timeDisplay">
+                            <div v-show="note.time" class="time" @click="switchTimerType(note)">{{ timeString(note) }}</div>
+                            <div v-show="note.countdown && note.timeSet" class="countdownDisplay">
+                                <div class="resetCountdownBtn" @click="resetCountdown(note)">↻</div>
+                                <img v-show="!note.started" class="startStopBtn" src="start.svg" alt="start" @click="startStopTimer(note)"></img>
+                                <img v-show="note.started" class="startStopBtn" src="stop.svg" alt="stop" @click="startStopTimer(note)"></img>
+                            </div>
+                            <div v-show="note.countdown" class="time" @click="switchTimerType(note)">{{ timeRemainingString(note) }}</div>
+                            <button class="editBtn" @click="editTimer(note)">edit</button>
+                        </div>
+                        <div v-show="note.editTime || note.editCountdown" class="editTimeDisplay">
+                            <input v-show="note.editTime" type="time" class="editTime" v-model="note.inputTime"></input>
+                            <input v-show="note.editCountdown" type="time" class="editTime" v-model="note.inputCountdown" step="1"></input>
+                            <button @click="setTimer(note)">✔</button>
+                            <button @click="editTimer(note)">✘</button>
+                        </div>
+                        <div class="deleteNote" @click="deleteNote(index)">✕</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-<script src="model.js"></script>
-<script src="view.js"></script>
-<script src="controller.js"></script>
-<script>
-    // will add:
-    // toggle night/day button ◑.
-    // "add note" button.
-    // alarm 🔇🔊.
-    // relevant background image.
-</script>
+<script src="script.js"></script>
 </html>
