@@ -6,13 +6,9 @@ body {
 }
 #backgroundClock {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     font-size: 22em;
     opacity: 0.2;
 }
@@ -64,15 +60,23 @@ body {
 }
 .description {
     cursor: default;
+    min-height: 2em;
+    display: flex;
+    align-items: center;
+    max-width: 85vw;
+    font-size: 1.2em;
+    white-space: normal;
 }
 .editDescription {
     display: flex;
     width: 100%;
+    min-height: 3em;
 }
 .editDescription textarea {
     flex-grow:1;
     margin-right: 10px;
     resize: vertical;
+    font-size: 1.2em;
 }
 .noteRight {
     margin-left: 40px;
