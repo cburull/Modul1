@@ -10,7 +10,7 @@ body {
     left: 50%;
     transform: translate(-50%,-50%);
     font-size: 22em;
-    opacity: 0.2;
+    color:rgb(160, 160, 160);
 }
 #page {
     position: absolute;
@@ -46,7 +46,7 @@ body {
     transform: translate(285px);
 }
 .note {
-    background: rgba(255, 255, 255,0.7);
+    background: rgba(255, 255, 255,0.75);
     display: flex;
     align-items: center;
     justify-content: space-between;
