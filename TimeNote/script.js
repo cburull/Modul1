@@ -83,7 +83,6 @@ const timeNote = Vue.createApp({
             this.setEndTimeCountdown(note);
             for (let i in T) {note.totalTime[i] = T[i];}    // sets totalTime.
             note.editCountdown = false;
-            note.started=true;
         },
         startStopTimer(note) {
             if (!note.started && note.countdown) this.setEndTimeCountdown(note);     // sets end time if countdown.
